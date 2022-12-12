@@ -1,8 +1,10 @@
 import hashlib
 import json
-from textwrap import dedent
 from time import time
+from urllib.parse import urlparse
 from uuid import uuid4
+
+import requests
 
 from flask import Flask, jsonify, request
 
@@ -37,7 +39,7 @@ class Blockchain (object):
         self.chain.append(block)
         return block
     
-    def new_transaction(self):
+    def new_transaction(self, sender, recipient, amount):
         """
         Creates new transaction to go into the next mined block
 
@@ -74,7 +76,7 @@ class Blockchain (object):
         return self.chain[-1]
 
     
-    def proof_of_work_(self, last_proof):
+    def proof_of_work(self, last_proof):
         """
         simple proof of work algorithm:
          -find number p' such taht hash(pp') contains leading 4 zeroes, where p is the previous
